@@ -4,7 +4,8 @@ public class article {
     String link,title,author,date;
     String push_num;
     String same_title_article_link,same_author_article_link;
-    public article(String link,String title,String author,String date,String push_num,String same_title,String same_author){
+    String board;
+    public article(String link,String title,String author,String date,String push_num,String same_title,String same_author,String board){
         setLink(link);
         setTitle(title);
         setAuthor(author);
@@ -12,6 +13,7 @@ public class article {
         setPush_num(push_num);
         setSame_author_article_link(same_author);
         setSame_title_article_link(same_title);
+        setBoard(board);
     }
     public void setLink(String link){
         this.link=link;
@@ -32,6 +34,9 @@ public class article {
     }
     public void setSame_title_article_link(String same_title_article_link) {
         this.same_title_article_link = same_title_article_link;
+    }
+    public void setBoard(String board){
+        this.board=board;
     }
 
     public String getLink(){
@@ -56,8 +61,15 @@ public class article {
     public String getSame_title_article_link() {
         return same_title_article_link;
     }
+    public String getBoard(){
+        return board;
+    }
 
     public String toString(){
-        return String.format("%s   %s\t\t\t%s\n%s",getPush_num(),getTitle(),getDate(),getAuthor());
+        if(board.equals("")){
+            return String.format("%s   %s\t\t\t%s\n%s",getPush_num(),getTitle(),getDate(),getAuthor());
+        }else {
+            return String.format("%s   %s\t\t\t%s\n%s @ %s",getPush_num(),getTitle(),getDate(),getAuthor(),getBoard());
+        }
     }
 }

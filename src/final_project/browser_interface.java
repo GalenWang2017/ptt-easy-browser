@@ -110,6 +110,7 @@ public class browser_interface extends JFrame {
                 if(mouseEvent.getClickCount()==2){
                     article_content.setText("");
                     String url=article_model.get(article_list.getSelectedIndex()).getLink();
+                    article_model.get(article_list.getSelectedIndex()).setBoard(now_board);
                     insertHistory(article_model.get(article_list.getSelectedIndex()));
                     Thread get_arti_content=new Thread(new Runnable() {
                         @Override
@@ -589,7 +590,8 @@ public class browser_interface extends JFrame {
                         history_model.addAll(his_list);
                     }
                 }).start();
-
+                search_textfield.setEnabled(false);
+                search_textfield.setText("");
                 list_scrollPane.remove(article_list);
                 list_scrollPane.remove(board_list);
                 list_scrollPane.add(history_list);
@@ -658,7 +660,7 @@ public class browser_interface extends JFrame {
         article_content.setText("");
     }
 
-    //TODO 連接mongoDB儲存歷史紀錄
+    //連接mongoDB儲存歷史紀錄
     public void insertHistory(article article){
         new Thread(new Runnable() {
             @Override
@@ -672,6 +674,7 @@ public class browser_interface extends JFrame {
                 history_object.put("date", article.getDate());
                 history_object.put("link",article.getLink());
                 history_object.put("push_num",article.getPush_num());
+                history_object.put("board",article.getBoard());
                 mongoCollection.insertOne(Document.parse(history_object.toString()));
 
             }
@@ -679,6 +682,7 @@ public class browser_interface extends JFrame {
     }
     public ArrayList<article> getHistory(){
         ArrayList<article> articles=new ArrayList<>();
+        int count=0;
 
         MongoClient mongoClient = new MongoClient("localhost",27017);
         MongoDatabase mongoDatabase = mongoClient.getDatabase("browse_history");
@@ -692,8 +696,12 @@ public class browser_interface extends JFrame {
                     gethistory.get("author").toString(),
                     gethistory.get("date").toString(),
                     gethistory.get("push_num").toString(),
-                    "","");
+                    "","",gethistory.get("board").toString());
             articles.add(0,article);
+            count++;
+        }
+        for(int i=count;i>20;i--){
+            articles.remove(articles.size()-1);
         }
         return articles;
     }

@@ -80,7 +80,6 @@ public class loadURL {
                 same_author_link="";
                 same_title_link="";
             }else if((!title.contains("刪除")) && (!title.contains("已被"))){
-//                System.out.println(!title.contains("刪除"));
                 author=article_rent.getElementsByClass("author").text();
                 push_num=article_rent.getElementsByClass("nrec").text().toString();
                 same_author_link=article_rent.getElementsByClass("item").get(1).getElementsByTag("a").attr("href").toString();
@@ -92,7 +91,7 @@ public class loadURL {
                 same_author_link="";
                 same_title_link="";
             }
-            article=new article(link,title,author,date,push_num,same_title_link,same_author_link);
+            article=new article(link,title,author,date,push_num,same_title_link,same_author_link,"");
             articles.add(article);
         }
 
